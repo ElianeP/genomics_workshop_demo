@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import numpy as np
+=======
+>>>>>>> 8ae8dde00c0f7e6165e8232e75863c3faf433371
 complimentary_nucleotides = {'A': 'U', 'U': 'A', 'C': 'G', 'G': 'C'}
 
 type_motifs = {'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA': 'polyA tail mRNA',
@@ -37,12 +40,37 @@ class RNA:
                 # return print('not this type')
 
 
+    def check_polyA(self):
+        """
+        Checks whether the RNA sequence contains a poly A tail of 50 adenines.
+        :return: True if yes, False otherwise
+        """
+        return True if self.sequence.endswith('A'*50) else False
+        return all(nucleotide.upper() in 'GCAU' for nucleotide in self.sequence)
 
     @property
     def complimentary_sequence(self):
-        return RNA(''.join(complimentary_nucleotides[nt] for nt in self.sequence.upper()))
+        return RNA(''.join(complimentary_nucleotides[nt.upper()] for nt in self.sequence))
+
+
+
+    @property
+    def _check_if_mutated(self):
+        """
+        This function checks whether the particular sequence inserted corresponds to GGGGGGGGGGUGGGGGGGGG,
+        otherwise it means the sequence is mutated and the function reports this.
+        :return:
+        """
+        is_mutated = 'GGGGGGGGGGUGGGGGGGGG' in self.sequence
+        #return True if is_mutated else False
+        print('The fish is mutated') if is_mutated else print('The fish is not mutated')
+
 
     def get_aa_sequence(self):
+        """
+        This function provides the potential amino-acid the RNA sequence encodes, even if this is non-coding RNA.
+        :return:
+        """
 
         aa = {
             'UUU' : 'Phe',
@@ -89,16 +117,18 @@ class RNA:
 
         return '-'.join(aa_sequence)
 
+    @property
+    def reverse_sequence(self):
+        return RNA(''.join(reversed(self.sequence)))
+
+
 
     @property
-    def _check_if_mutated(self):
-        """
-        This function checks whether the particular sequence inserted corresponds to GGGGGGGGGGUGGGGGGGGG,
-        otherwise it means the sequence is mutated and the function reports this.
-        :return:
-        """
-        is_mutated = 'GGGGGGGGGGUGGGGGGGGG' in self.sequence
-        #return True if is_mutated else False
-        print('The fish is mutated') if is_mutated else print('The fish is not mutated')
-
+    def rna_start_codon(self):
+        "Just a help text"
+        "or not"
+        if 'AUG' in self.sequence:
+            return('coding RNA')
+        else:
+            return('non coding RNA')
 
