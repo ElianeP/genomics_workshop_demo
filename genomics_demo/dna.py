@@ -20,11 +20,18 @@ class DNA:
         return all(nucleotide in 'GCAT' for nucleotide in self.sequence.upper())
 
     @property
+    def gc_content(self):
+        return sum(nucleotide in 'GC' for nucleotide in self.sequence.upper())/len(self.sequence)
+
+    @property
     def complimentary_sequence(self):
         return DNA(''.join(complimentary_nucleotides[nt.upper()] for nt in self.sequence))
 
     @property
     def split_DNA_triplets(self):
+        """
+        This functions divides DNA sequence into triplets, irrespective of where the start codon is.
+        """
         return [self.sequence[i:i + 3] for i in range(0, len(self.sequence), 3)]
 
     @property
